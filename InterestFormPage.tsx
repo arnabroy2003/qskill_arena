@@ -25,8 +25,10 @@ import {
 } from 'lucide-react';
 
 // Google Sheets API Webhook Endpoint (e.g. Google Apps Script Web App URL)
-// Can be set directly here or in .env as VITE_GOOGLE_SHEET_URL
-const GOOGLE_SHEET_API_URL = import.meta.env.VITE_GOOGLE_SHEET_URL || '';
+// Can be overridden in .env as VITE_GOOGLE_SHEET_URL
+const GOOGLE_SHEET_API_URL = 
+  import.meta.env.VITE_GOOGLE_SHEET_URL || 
+  'https://script.google.com/macros/s/AKfycbzDx3CPJqkYLvGUchCs5Y7vCE-MfjuhPK3EM-YByrjxfaU8JgMYhFlrs-Z40nBGGp0b/exec';
 
 interface FormState {
   fullName: string;
@@ -289,14 +291,13 @@ export default function InterestFormPage() {
           method: 'POST',
           mode: 'no-cors',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'text/plain;charset=utf-8',
           },
           body: JSON.stringify(payload),
         });
       } else {
-        // Fallback simulation when VITE_GOOGLE_SHEET_URL is not set yet
         await new Promise(resolve => setTimeout(resolve, 700));
-        console.log('Interest form submission payload (Set VITE_GOOGLE_SHEET_URL to send to Google Sheets):', payload);
+        console.log('Interest form submission payload:', payload);
       }
 
       setIsSubmittedSuccess(true);
